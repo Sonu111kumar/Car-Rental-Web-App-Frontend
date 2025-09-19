@@ -1,0 +1,274 @@
+<div class="min-h-screen flex flex-col">
+  <!-- Hero Section -->
+  <div class="hero min-h-[80vh]  relative ">
+
+    <div class="carousel w-full h-full relative overflow-hidden rounded-xl shadow-lg">
+      <div *ngFor="let img of images; let i = index"
+        class="carousel-item absolute w-full h-full transition-opacity duration-700"
+        [class.opacity-100]="i === currentIndex" [class.opacity-0]="i !== currentIndex"
+        [style.display]="i === currentIndex ? 'block' : 'none'">
+        <img [src]="img" class="w-full h-full object-cover" />
+      </div>
+
+      <!-- Optional: manual controls -->
+      <button (click)="prevSlide()" class="absolute left-4 top-1/2 transform -translate-y-1/2 btn btn-circle">
+        ❮
+      </button>
+      <button (click)="nextSlide()" class="absolute right-4 top-1/2 transform -translate-y-1/2 btn btn-circle">
+        ❯
+      </button>
+    </div>
+
+
+
+
+
+    <div class="container max-w-xl overflow-hidden absolute  rounded-xl bg-white  shadow-xl xl:max-w-3xl">
+      <h2 class="text-4xl font-bold mb-1 p-5">Rent Your Perfect Ride Today</h2>
+      <div class="md:flex">
+        <section class="bg-none shadow-md py-1 mt-10 rounded-lg  static w-full">
+          <form class="container mx-auto  px-6 grid grid-cols-1 md:grid-cols-3 gap-2" [formGroup]="searchlocationForm">
+            <div>
+              <label class="block text-black ml-1 font-bold mb-2 text-xl">Pick-up Location</label>
+              <select class="select select-bordered " id="location" formControlName="location">
+                <option disabled selected>Choose a location</option>
+                <option *ngFor="let location of listOfLocation" [value]="location"> {{ location
+                  }} </option>
+              </select>
+
+
+
+            </div>
+
+            <div>
+              <div class="flex flex-col mb-4">
+                <label class="block text-black font-bold mb-2 text-xl">Pick-up Date</label>
+                <input id="toDate" type="date" formControlName="toDate"
+                  class="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 p-2 border rounded-md">
+              </div>
+            </div>
+
+
+            <div>
+
+              <div class="flex flex-col mb-4">
+                <label class="block text-black font-bold mb-2 text-xl">Drop-off Date</label>
+                <input id="toDate" type="date" formControlName="toDate"
+                  class="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 p-2 border rounded-md">
+              </div>
+            </div>
+            <div class="col-span-full md:col-span-3 mb-2 text-center">
+              <button class="btn btn-primary w-full md:w-1/3 hover:shadow-lg hover:scale-105 transition-transform"
+                (click)="search()">
+                Search Cars
+              </button>
+            </div>
+          </form>
+        </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="text-center my-8">
+    <!-- Heading -->
+    <h2 class="text-2xl font-bold mb-4">Featured Cars</h2>
+
+    <div class="flex items-center justify-center space-x-2">
+      <!-- Previous button -->
+      <button (click)="prevSlide1()" class="p-2 bg-gray-200 rounded hover:bg-gray-300">&#8592;</button>
+
+
+      <!-- Carousel -->
+      <div class="w-4/5 overflow-hidden">
+        <div class="flex space-x-2 transition-transform duration-500">
+          <div *ngFor="let car of visibleCars" class="car-card cursor-pointer w-1/5 flex-shrink-0 bg-white shadow rounded p-2"  (click)="openCarModal(car)">
+            <div class="w-full h-32  rounded overflow-hidden flex items-center justify-center">
+              <img [src]="car.processedImg" alt="{{car.model}}" class="w-full h-full object-scale-down">
+            </div>
+            <h3 class="font-semibold text-lg mt-2 text-center">{{car.brand}} {{car.model}}</h3>
+            <p class="text-gray-600 text-sm text-center"> ₹ {{car.price}}/day</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next button -->
+      <button (click)="nextSlide1()" class="p-2 bg-gray-200 rounded hover:bg-gray-300">&#8594;</button>
+    </div>
+
+    <button (click)="viewAllCars()" class="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      View All Cars
+    </button>
+
+  </div>
+
+<!-- Car Details Modal -->
+<input type="checkbox" id="carDetailsModal" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box max-w-2xl">
+    <label for="carDetailsModal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <h3 class="text-lg font-bold">{{ selectedCar?.brand }} {{ selectedCar?.model }}</h3>
+    <img [src]="selectedCar?.processedImg" alt="{{ selectedCar?.model }}" class="w-full h-48 object-cover rounded-md mb-2">
+    <p><strong>Price/Day:</strong> ₹{{ selectedCar?.price }}</p>
+   <p><strong>Location:</strong> {{ selectedCar?.location }}</p>
+   <p><strong>Color:</strong> {{ selectedCar?.color }}</p>
+    <p><strong>Transmission:</strong> {{ selectedCar?.transmission }}</p>
+
+    <div class="modal-action">
+    
+      <button class="btn btn-primary" (click)="bookCar(selectedCar?.id)">Book Now</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+  <!-- Features Section -->
+  <section class="container mx-auto py-12">
+    <h2 class="text-4xl font-bold text-center mb-8">Why Choose Us?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Feature Card -->
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body items-center text-center">
+          <div class="text-primary">
+            <svg class="w-12 h-12 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 10h11M9 21v-6m0 6H4m5-6l3-3m7-3h5m-3-3v3m0 0l3 3m-6-6v6" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-xl">Wide Selection</h3>
+          <p>Choose from a variety of vehicles to suit your needs.</p>
+        </div>
+      </div>
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body items-center text-center">
+          <div class="text-primary">
+            <svg class="w-12 h-12 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20 13V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7m16 0v5m-6-1v2m6-6H4" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-xl">Affordable Pricing</h3>
+          <p>Best value for your money with transparent pricing.</p>
+        </div>
+      </div>
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body items-center text-center">
+          <div class="text-primary">
+            <svg class="w-12 h-12 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M14 10V3m0 0L9 8m5-5h5m-5 5v6m0 0l3-3m0 0l-3-3m3 3H7" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-xl">24/7 Support</h3>
+          <p>Round-the-clock assistance for all your needs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <!-- Testimonials Section -->
+  <section class="py-12 bg-gray-100">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-8">What Our Customers Say</h2>
+      <div class="flex justify-center gap-8">
+        <div class="p-6 max-w-xs bg-white shadow-lg rounded-lg">
+          <p class="text-lg">"Amazing experience! The car was clean, and the service was top-notch. Will rent
+            again!"</p>
+          <p class="mt-4 text-sm text-gray-500">- John Doe</p>
+        </div>
+        <div class="p-6 max-w-xs bg-white shadow-lg rounded-lg">
+          <p class="text-lg">"The booking process was easy, and the car was delivered on time. Highly
+            recommend!"</p>
+          <p class="mt-4 text-sm text-gray-500">- Jane Smith</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="min-h-3 min-w-full flex flex-col justify-center p-24">
+    <div class="relative w-full max-w-full lg:max-w-6xl xl:max-w-screen-2xl mx-auto">
+      <!-- Background Gradient -->
+      <div
+        class="absolute inset-0 -mr-3.5 bg-gradient-to-r from-teal-100 to-teal-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:rotate-3 sm:rounded-3xl">
+      </div>
+      <div class="relative bg-gray-200 shadow-lg sm:rounded-3xl">
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Section -->
+  <div class="relative isolate px-6 lg:px-8">
+    <!-- Background Gradient Top -->
+    <div class="absolute inset-x-0 -top-10 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+      <div
+        class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-teal-200 to-teal-400 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="mx-auto max-w-2xl py-16 sm:py-24 lg:py-28 text-center">
+      <h1
+        class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl hover:text-teal-500 transition duration-300">
+        Start your journey with our high-quality rental cars
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-gray-600 hover:text-gray-800 transition duration-300">
+        Explore the open road with ease! Rent a car effortlessly with us. Enjoy stylish rides, simple bookings, and
+        unbeatable comfort. Your journey begins now. Start driving with confidence and make memories on every mile.
+        Choose
+        convenience, choose SwiftCarRentals.
+      </p>
+      <div class="mt-8">
+        <button
+          class="px-6 py-3 text-lg font-medium text-white bg-teal-500 rounded-full hover:bg-teal-600 hover:shadow-lg transition transform hover:scale-105">
+          Learn More
+        </button>
+      </div>
+    </div>
+
+    <!-- Background Gradient Bottom -->
+    <div
+      class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+      aria-hidden="true">
+      <div
+        class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-teal-200 to-teal-400 opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+      </div>
+    </div>
+  </div>

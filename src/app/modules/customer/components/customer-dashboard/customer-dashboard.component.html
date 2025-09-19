@@ -1,0 +1,356 @@
+
+<div class="flex min-h-screen bg-gray-100">
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <!-- Welcome -->
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold">Welcome back, {{ userName }} 🚗</h1>
+      <p class="text-gray-600">Here’s a quick overview of your account</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="card bg-white shadow p-4">
+        <h2 class="text-gray-500">Active Bookings</h2>
+        <p class="text-2xl font-bold">{{ bookings.length }}</p>
+      </div>
+      <div class="card bg-white shadow p-4">
+        <h2 class="text-gray-500">Completed Rides</h2>
+        <!-- <p class="text-2xl font-bold">{{ stats.completedRides }}</p> -->
+      </div>
+      <div class="card bg-white shadow p-4">
+        <h2 class="text-gray-500">Pending Payments</h2>
+        <!-- <p class="text-2xl font-bold">{{ stats.pendingPayments }}</p> -->
+      </div>
+      <div class="card bg-white shadow p-4">
+        <h2 class="text-gray-500">Reward Points</h2>
+        <p class="text-2xl font-bold"> 10 </p>
+      </div>
+    </div>
+
+   <!-- Active Bookings -->
+<div class="mb-8" *ngIf="bookings.length > 0">
+  <h2 class="text-xl font-bold mb-4">Active Bookings</h2>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div *ngFor="let booking of bookings" class="card bg-white shadow p-4 flex flex-col items-center">
+      <div class="w-full h-48 overflow-hidden rounded-md mb-4">
+        <img class="w-full h-full object-cover" [src]="booking.processedImg" alt="Cars">
+      </div>
+      
+      <div class="font-bold text-lg text-center mb-2">
+        {{ booking.brand }} - {{ booking.name }}
+      </div>
+       
+      <div class="flex space-x-2">
+        <button class="btn btn-sm btn-primary" (click)="openModal(booking)">View</button>
+        <!-- <button class="btn btn-sm btn-warning" (click)="extendBooking(booking.id)">Extend</button> -->
+        <!-- <button class="btn btn-sm btn-error" (click)="cancelBooking(booking.id)">Cancel</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<input type="checkbox" id="booking-modal" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box relative">
+    <label for="booking-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    
+    <h3 class="text-xl font-bold mb-2">{{ selectedBooking?.brand }} - {{ selectedBooking?.name }}</h3>
+    <div class="mb-2">
+      <img class="w-full h-48 object-cover rounded-md mb-2" [src]="selectedBooking?.processedImg" alt="Car Image">
+      <p><strong>Price:</strong> ₹ {{ selectedBooking?.price }}</p>
+      <p><strong>Start Date:</strong> {{ selectedBooking?.fromDate | date }}</p>
+      <p><strong>End Date:</strong> {{ selectedBooking?.toDate | date }}</p>
+      <p><strong>Days:</strong> {{ selectedBooking?.days }}</p>
+      <p><strong>Status:</strong> {{ selectedBooking?.bookingStatus }}</p>
+      
+    </div>
+  </div>
+</div>
+
+    <!-- Booking History -->
+    <div class="mb-8">
+      <h2 class="text-xl font-bold mb-4">Booking History</h2>
+      <div class="overflow-x-auto">
+        <table class="table w-full bg-white shadow">
+          <thead>
+            <tr>
+              <th>Car</th>
+              <th>Pickup</th>
+              <th>Drop</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr *ngFor="let booking of bookingHistory">
+              <td>{{ booking.car }}</td>
+              <td>{{ booking.pickup }}</td>
+              <td>{{ booking.drop }}</td>
+              <td>₹{{ booking.amount }}</td>
+              <td>{{ booking.status }}</td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div *ngIf="notifications.length > 0">
+      <h2 class="text-xl font-bold mb-4">Notifications</h2>
+      <ul class="list-disc list-inside bg-white shadow p-4 rounded">
+        <li *ngFor="let note of notifications">{{ note }}</li>
+      </ul>
+    </div>
+  </main>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="min-h-screen flex flex-col">
+    <!-- Hero Section -->
+    <div class="hero min-h-[80vh]  relative ">
+
+        <div class="carousel w-full h-full relative overflow-hidden rounded-xl shadow-lg">
+            <div *ngFor="let img of images; let i = index"
+                class="carousel-item absolute w-full h-full transition-opacity duration-700"
+                [class.opacity-100]="i === currentIndex" [class.opacity-0]="i !== currentIndex"
+                [style.display]="i === currentIndex ? 'block' : 'none'">
+                <img [src]="img" class="w-full h-full object-cover" />
+            </div>
+
+            <!-- Optional: manual controls -->
+            <button (click)="prevSlide()" class="absolute left-4 top-1/2 transform -translate-y-1/2 btn btn-circle">
+                ❮
+            </button>
+            <button (click)="nextSlide()" class="absolute right-4 top-1/2 transform -translate-y-1/2 btn btn-circle">
+                ❯
+            </button>
+        </div>
+
+
+
+
+
+        <div class="container max-w-xl overflow-hidden absolute  rounded-xl bg-white  shadow-xl xl:max-w-3xl">
+            <h2 class="text-4xl font-bold mb-1 p-5">Rent Your Perfect Ride Today</h2>
+            <div class="md:flex">
+                <section class="bg-none shadow-md py-1 mt-10 rounded-lg  static w-full">
+                    <form class="container mx-auto  px-6 grid grid-cols-1 md:grid-cols-3 gap-2"
+                        [formGroup]="searchlocationForm">
+                        <div>
+                            <label class="block text-black ml-1 font-bold mb-2 text-xl">Pick-up Location</label>
+                            <select class="select select-bordered " id="location" formControlName="location">
+                                <option disabled selected>Choose a location</option>
+                                <option *ngFor="let location of listOfLocation" [value]="location"> {{ location
+                                    }} </option>
+                            </select>
+
+
+
+                        </div>
+
+                        <div>
+                            <div class="flex flex-col mb-4">
+                                <label class="block text-black font-bold mb-2 text-xl">Pick-up Date</label>
+                                <input id="fromDate" type="date" formControlName="fromDate"
+                                    class="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 p-2 border rounded-md">
+                            </div>
+                        </div>
+
+
+                        <div>
+
+                            <div class="flex flex-col mb-4">
+                                <label class="block text-black font-bold mb-2 text-xl">Drop-off Date</label>
+                                <input id="toDate" type="date" formControlName="toDate"
+                                    class="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 p-2 border rounded-md">
+                            </div>
+                        </div>
+                        <div class="col-span-full md:col-span-3 mb-2 text-center">
+                            <button
+                                class="btn btn-primary w-full md:w-1/3 hover:shadow-lg hover:scale-105 transition-transform"
+                                (click)="search()">
+                                Search Cars
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+
+            </div>
+        </div>
+
+     
+
+
+    </div>
+
+
+
+
+    <div
+        class="p-10 grid grid-cols-1 shadow-gray-950 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+        <!--Card -->
+        <div class=" card rounded overflow-hidden shadow-lg" *ngFor="let car of cars">
+            <img class="w-full" [src]="car.processedImg" alt="Cars">
+
+
+
+
+            <div class="px-6 py-4">
+                <div class="font-bold text-xl mb-2"> {{car.brand}} - {{car.name}} </div>
+                <p class="text-gray-700 text-base">
+                    {{ car.description }}
+                </p>
+            </div>
+            <div class="px-6 pt-4 pb-2">
+                <span
+                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Price
+                    : ₹ {{ car.price }}/day</span>
+                <span
+                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Transmission
+                    : {{ car.transmission }} </span>
+                <span
+                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Type
+                    : {{ car.type }} </span>
+                <span
+                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Color:
+                    {{ car.color }} </span>
+                <span
+                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Model
+                    Year : {{ car.year }} </span>
+                <span
+                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Location
+                    : {{ car.location }} </span>
+            </div>
+            <div class="flex items-center justify-center mb-2">
+                <button class="btn btn-primary text-white" routerLink="/customer/book/{{car.id}}">Book Now</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- Features Section -->
+    <section class="container mx-auto py-12">
+        <h2 class="text-4xl font-bold text-center mb-8">Why Choose Us?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Feature Card -->
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body items-center text-center">
+                    <div class="text-primary">
+                        <svg class="w-12 h-12 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10h11M9 21v-6m0 6H4m5-6l3-3m7-3h5m-3-3v3m0 0l3 3m-6-6v6" />
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-xl">Wide Selection</h3>
+                    <p>Choose from a variety of vehicles to suit your needs.</p>
+                </div>
+            </div>
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body items-center text-center">
+                    <div class="text-primary">
+                        <svg class="w-12 h-12 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20 13V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7m16 0v5m-6-1v2m6-6H4" />
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-xl">Affordable Pricing</h3>
+                    <p>Best value for your money with transparent pricing.</p>
+                </div>
+            </div>
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body items-center text-center">
+                    <div class="text-primary">
+                        <svg class="w-12 h-12 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 10V3m0 0L9 8m5-5h5m-5 5v6m0 0l3-3m0 0l-3-3m3 3H7" />
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-xl">24/7 Support</h3>
+                    <p>Round-the-clock assistance for all your needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Testimonials Section -->
+    <section class="py-12 bg-gray-100">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-8">What Our Customers Say</h2>
+            <div class="flex justify-center gap-8">
+                <div class="p-6 max-w-xs bg-white shadow-lg rounded-lg">
+                    <p class="text-lg">"Amazing experience! The car was clean, and the service was top-notch. Will rent
+                        again!"</p>
+                    <p class="mt-4 text-sm text-gray-500">- John Doe</p>
+                </div>
+                <div class="p-6 max-w-xs bg-white shadow-lg rounded-lg">
+                    <p class="text-lg">"The booking process was easy, and the car was delivered on time. Highly
+                        recommend!"</p>
+                    <p class="mt-4 text-sm text-gray-500">- Jane Smith</p>
+                </div>
+            </div>
+        </div>
+    </section>

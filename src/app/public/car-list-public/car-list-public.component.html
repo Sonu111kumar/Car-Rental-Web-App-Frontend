@@ -1,0 +1,35 @@
+<div class=" p-5 grid grid-cols-1 shadow-gray-950 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+    <!--Card -->
+    <div class=" card cursor-pointer rounded overflow-hidden shadow-lg " *ngFor="let car of cars">
+        <img class="w-full" [src]="car.processedImg" alt="Cars">
+        <div class="px-6 py-4">
+            <div class="font-bold text-xl mb-2"> {{car.brand}} - {{car.name}} </div>
+
+            <p class="text-gray-700 text-base">
+                {{ car.description }}
+            </p>
+        </div>
+        <div class="px-6 pt-4 pb-2">
+            <span
+                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Price
+                : ₹ {{ car.price }}/day</span>
+            <span
+                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Transmission
+                : {{ car.transmission }} </span>
+            <span
+                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Type
+                : {{ car.type }} </span>
+            <span
+                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Color:
+                {{ car.color }} </span>
+            <span
+                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Model
+                Year : {{ car.year }} </span>
+        </div>
+        <div class="flex items-center justify-center mb-2">
+            <button (click)="bookCar(car.id)" class="btn btn-primary text-white">Book Now</button>
+        </div>
+
+    </div>
+
+</div>

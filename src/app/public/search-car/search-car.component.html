@@ -1,0 +1,188 @@
+<div class="flex">
+    <div class="w-1/4 pr-4">
+        <div class="bg-white shadow-md rounded-xl p-6 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center">Filters</h2>
+
+            <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="space-y-4">
+                <div>
+                    <label for="location" class="block font-medium mb-2">Location</label>
+                    <select id="location" class="select select-bordered w-full" formControlName="location">
+                        <option value="">All Locations</option>
+                        <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+                    </select>
+                </div>
+
+                <!-- Price Range -->
+                <div class="form-control">
+                    <label class="label font-medium">Price per Day (₹)</label>
+                    <input type="range" formControlName="price" min="500" max="8000" step="100"
+                        class="range range-primary" />
+                    <div class="flex justify-between text-xs px-2">
+                        <span>₹500</span>
+                        <span>{{ filterForm.get('price')?.value || 8000 }}</span>
+                    </div>
+                </div>
+
+                <!-- Car Type -->
+                <div class="form-control">
+                    <label class="label font-medium">Car Type</label>
+                    <select formControlName="cartype" class="select select-bordered w-full">
+                        <option value="">All</option>
+                        <option value="hatchback">Hatchback</option>
+                        <option value="sedan">Sedan</option>
+                        <option value="suv">SUV</option>
+                        <option value="luxury">Luxury</option>
+                        <option value="electric">Electric</option>
+                    </select>
+                </div>
+
+
+                <!-- Brand Filter -->
+<div class="form-control">
+  <label class="label cursor-pointer">
+    <span class="label-text font-semibold">Brand</span>
+  </label>
+  <select formControlName="brand" class="select select-bordered w-full">
+        
+    <option value="">All Brands</option>
+    <option *ngFor="let brand of availableBrands" [value]="brand">{{ brand }}</option>
+  </select>
+</div>
+
+<!-- Color Filter -->
+<div class="form-control mt-4">
+  <label class="label cursor-pointer">
+    <span class="label-text font-semibold">Color</span>
+  </label>
+  <select formControlName="color" class="select select-bordered w-full">
+    <option value="">All Colors</option>
+    <option *ngFor="let color of availableColors" [value]="color">{{ color }}</option>
+  </select>
+</div>
+
+
+                <!-- Transmission -->
+                <div class="form-control">
+                    <label class="label font-medium">Transmission</label>
+                    <div class="flex gap-4">
+                        <label class="cursor-pointer flex items-center gap-2">
+                            <input type="radio" formControlName="transmission" value="manual"
+                                class="radio radio-primary" />
+                            Manual
+                        </label>
+                        <label class="cursor-pointer flex items-center gap-2">
+                            <input type="radio" formControlName="transmission" value="automatic"
+                                class="radio radio-primary" />
+                            Automatic
+                        </label>
+                         <label class="cursor-pointer flex items-center gap-2">
+                            <input type="radio" formControlName="transmission" value="semi-automatic"
+                                class="radio radio-primary" />
+                            Semi-Automatic
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Fuel Type -->
+                <div class="form-control">
+                    <label class="label font-medium">Fuel Type</label>
+                    <div class="flex flex-wrap gap-4">
+                        <label class="cursor-pointer flex items-center gap-2">
+                            <input type="radio" formControlName="type" value="petrol" 
+                                class="radio radio-primary" />
+                            Petrol
+                        </label>
+                        <label class="cursor-pointer flex items-center gap-2">
+                            <input type="radio" value="diesel" formControlName="type" 
+                                class="radio radio-primary" />
+                            Diesel
+                        </label>
+                        <label class="cursor-pointer flex items-center gap-2">
+                            <input type="radio" value="electric" formControlName="type" 
+                                class="radio radio-primary" />
+                            Electric
+                        </label>
+                        <label class="cursor-pointer flex items-center gap-2">
+                            <input type="radio" value="hybrid" formControlName="type" 
+                                class="radio radio-primary" />
+                            Hybrid
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Seats -->
+                <div class="form-control">
+                    <label class="label font-medium">Seats</label>
+                    <select formControlName="seats" class="select select-bordered w-full">
+                        <option value="">Any</option>
+                        <option value="2">2 Seats</option>
+                        <option value="4">4 Seats</option>
+                        <option value="5">5 Seats</option>
+                        <option value="7">7+ Seats</option>
+                    </select>
+                </div>
+
+                <!-- Sort By -->
+                <div class="form-control">
+                    <label class="label font-medium">Sort By</label>
+                    <select formControlName="sortBy" class="select select-bordered w-full">
+                        <option value="priceLowHigh">Price: Low → High</option>
+                        <option value="priceHighLow">Price: High → Low</option>
+                        <option value="newest">Newest Cars</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex justify-between gap-4 pt-4">
+                    <button type="submit" class="btn btn-primary w-1/2">Apply</button>
+                    <button type="button" (click)="resetFilters()" class="btn btn-outline w-1/2">Reset</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+
+    <div class="w-3/4 pr-4">
+
+        <div
+            class="p-10 grid grid-cols-1 shadow-gray-950 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+            <!--Card -->
+            <div class=" card rounded overflow-hidden shadow-lg" *ngFor="let car of cars">
+                <img class="w-full" [src]="car.processedImg" alt="Cars">
+
+                <div class="px-6 py-4">
+                    <div class="font-bold text-xl mb-2"> {{car.brand}} - {{car.name}} </div>
+                    <p class="text-gray-700 text-base">
+                        {{ car.description }}
+                    </p>
+                </div>
+                <div class="px-6 pt-4 pb-2">
+                    <span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Price
+                        : ₹ {{ car.price }}/day</span>
+                    <span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Transmission
+                        : {{ car.transmission }} </span>
+                    <span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Type
+                        : {{ car.type }} </span>
+                    <span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Color:
+                        {{ car.color }} </span>
+                    <span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Model
+                        Year : {{ car.year }} </span>
+                    <span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Location
+                        : {{ car.location }} </span>
+                </div>
+                <div class="flex items-center justify-center mb-2">
+                    <button (click)="bookCar(car.id)" class="btn btn-primary text-white">Book Now</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

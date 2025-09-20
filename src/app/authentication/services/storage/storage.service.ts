@@ -13,21 +13,21 @@ export class StorageService {
 
 
 static saveToken(token: string): void {
-  window.localStorage.removeItem(TOKEN);
-  window.localStorage.setItem(TOKEN, token);
+  window.sessionStorage.removeItem(TOKEN);
+  window.sessionStorage.setItem(TOKEN, token);
 }
 
 static saveUser(user: any): void {
-  window.localStorage.removeItem(USER);
-  window.localStorage.setItem(USER, JSON.stringify(user));
+  window.sessionStorage.removeItem(USER);
+  window.sessionStorage.setItem(USER, JSON.stringify(user));
 }
 
 static getToken() {
-  return window.localStorage.getItem(TOKEN);
+  return window.sessionStorage.getItem(TOKEN);
 }
 
 static getUser(){
-  return JSON.parse(localStorage.getItem(USER) as string);
+  return JSON.parse(sessionStorage.getItem(USER) as string);
 }
 
 static getUserId(): string {
@@ -55,8 +55,8 @@ static isCustomerLoggedIn(): boolean {
 }
 
 static logOut(): void {
-  window.localStorage.removeItem(TOKEN);
-  window.localStorage.removeItem(USER);
+  window.sessionStorage.removeItem(TOKEN);
+  window.sessionStorage.removeItem(USER);
 }
 
 
